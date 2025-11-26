@@ -1,0 +1,1058 @@
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+section,
+footer {
+    scroll-margin-top: 100px;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+::selection {
+    background: var(--text-primary);
+    color: var(--bg-body);
+}
+
+body {
+    background-color: var(--bg-body);
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+    overflow-x: hidden;
+}
+
+#background-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    /* Allow clicks to pass through to content */
+}
+
+/* When acting as loader, sit on top of everything */
+#background-canvas.canvas-loader {
+    z-index: 9999;
+    pointer-events: auto;
+    /* Block clicks while loading */
+}
+
+.container {
+    width: 100%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 var(--space-sm);
+}
+
+/* Skip Link */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    background: var(--text-primary);
+    color: var(--bg-body);
+    padding: var(--space-sm) var(--space-md);
+    z-index: 1001;
+    text-decoration: none;
+    font-weight: 500;
+    transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Navigation */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--space-sm) 0;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .navbar {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: var(--space-md);
+    list-style: none;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    transition: color var(--transition-fast);
+}
+
+.nav-links a:hover {
+    color: var(--text-primary);
+}
+
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-primary);
+    padding: var(--space-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+.icon-sun,
+.icon-moon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transition: all 0.3s ease;
+}
+
+/* Default (Light Mode): Show Moon, Hide Sun */
+.icon-moon {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+.icon-sun {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(90deg) scale(0);
+}
+
+/* Dark Mode: Show Sun, Hide Moon */
+[data-theme="dark"] .icon-sun {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+[data-theme="dark"] .icon-moon {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-90deg) scale(0);
+}
+
+/* Hero Section */
+.hero-section {
+    padding: var(--space-xl) 0 var(--space-lg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+    align-items: center;
+}
+
+.hero-actions {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    transition: all var(--transition-fast);
+}
+
+.btn-primary {
+    background-color: var(--text-primary);
+    color: var(--bg-body);
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--border-color);
+}
+
+/* Profile Image */
+.profile-card {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 1;
+    margin-left: auto;
+    /* For glow effect positioning */
+    --x: 50%;
+    --y: 50%;
+}
+
+.profile-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.4s ease;
+}
+
+.profile-card:hover .profile-image-wrapper {
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* border-radius removed, handled by wrapper */
+    filter: grayscale(100%);
+    transition: filter var(--transition-fast), transform 0.5s ease;
+    object-position: center 35%;
+}
+
+.profile-card:hover .profile-image {
+    filter: grayscale(0%);
+    transform: scale(1.05);
+}
+
+.glow-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--x) var(--y),
+            rgba(255, 255, 255, 0.4) 0%,
+            rgba(255, 255, 255, 0) 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+.profile-card:hover .glow-overlay {
+    opacity: 1;
+}
+
+.stat-box {
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    background: var(--bg-card);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-number {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--accent-color);
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* Bento Grid */
+.bento-section {
+    padding: var(--space-lg) 0;
+}
+
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: var(--space-sm);
+}
+
+.bento-card {
+    background: var(--bg-card);
+    padding: var(--space-md);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.about-card {
+    grid-column: span 2;
+}
+
+.skills-card {
+    grid-column: span 1;
+}
+
+.tools-card {
+    grid-column: span 1;
+}
+
+.education-card {
+    grid-column: span 2;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-top: var(--space-sm);
+}
+
+.tags span {
+    background: var(--bg-body);
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.875rem;
+    border: 1px solid var(--border-color);
+}
+
+/* Experience Timeline */
+.experience-section {
+    padding: var(--space-lg) 0;
+}
+
+.section-title {
+    margin-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: var(--space-sm);
+}
+
+/* Reduce gap for specific sections as requested */
+.experience-section .section-title,
+.projects-section .section-title,
+.blogs-section .section-title {
+    margin-bottom: var(--space-md);
+}
+
+.timeline-road {
+    position: relative;
+    padding: 0;
+    /* Remove top padding to align line with nodes */
+    display: flex;
+    /* Default to horizontal for desktop */
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-md);
+    margin-top: 50px;
+    margin-bottom: 0;
+    /* Reduced default margin to 0 to match other sections */
+    transition: margin-bottom 0.3s ease;
+    /* Smooth transition for sliding effect */
+}
+
+/* Slide down projects section when hovering timeline elements */
+@media (min-width: 769px) {
+    .timeline-road {
+        padding-bottom: var(--space-xl);
+    }
+
+    .timeline-road:has(.node-circle:hover),
+    .timeline-road:has(.timeline-popup:hover) {
+        margin-bottom: 250px;
+        /* Increase margin to accommodate popup */
+    }
+}
+
+.timeline-line {
+    position: absolute;
+    /* Horizontal line for desktop */
+    top: 12px;
+    /* Aligns with circle center */
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--border-color);
+    z-index: 0;
+    width: 0;
+    /* Start with 0 width */
+    transform: none;
+    transition: width 1.5s ease-out;
+    /* Animate width */
+}
+
+.timeline-road.in-view .timeline-line {
+    width: 100%;
+    /* Expand to full width when in view */
+}
+
+.timeline-node-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+    flex: 1;
+    opacity: 0;
+    /* Start hidden */
+    transform: translateX(-30px);
+    /* Start slightly left */
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.timeline-road.in-view .timeline-node-wrapper {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Staggered animation delays */
+.timeline-road.in-view .timeline-node-wrapper:nth-child(2) {
+    transition-delay: 0.3s;
+}
+
+/* 1st node (index 2 because line is 1st child) */
+.timeline-road.in-view .timeline-node-wrapper:nth-child(3) {
+    transition-delay: 0.6s;
+}
+
+.timeline-road.in-view .timeline-node-wrapper:nth-child(4) {
+    transition-delay: 0.9s;
+}
+
+.timeline-road.in-view .timeline-node-wrapper:nth-child(5) {
+    transition-delay: 1.2s;
+}
+
+.timeline-content {
+    position: static;
+    /* Default for desktop, children are absolute */
+}
+
+/* Removed .timeline-node as structure is flattened */
+
+.node-circle {
+    width: 24px;
+    height: 24px;
+    background: var(--bg-body);
+    border: 4px solid var(--text-primary);
+    border-radius: 50%;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    z-index: 2;
+    margin-bottom: 0;
+    cursor: pointer;
+    /* Moved cursor here */
+}
+
+/* Label below the circle for desktop */
+.node-label {
+    position: absolute;
+    top: 35px;
+    /* Position below circle */
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    /* Prevent label from blocking hover path if needed, but we want hover on circle only */
+}
+
+.node-circle:hover {
+    transform: scale(1.3);
+    border-color: var(--accent-color);
+}
+
+.node-role {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.node-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.node-company {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Popup below the labels for desktop */
+.timeline-popup {
+    position: absolute;
+    top: 100px;
+    /* Below labels */
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    background: var(--bg-card);
+    padding: var(--space-md);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition-delay: 0.1s;
+    /* Small delay to keep it open while moving mouse */
+    z-index: 10;
+    pointer-events: auto;
+    /* Allow interaction within popup */
+}
+
+/* Show popup when hovering circle OR popup itself - Desktop Only */
+@media (min-width: 769px) {
+
+    .node-circle:hover~.timeline-content .timeline-popup,
+    .timeline-popup:hover {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) scale(1);
+    }
+}
+
+.popup-company {
+    font-size: 1.1rem;
+    margin-bottom: var(--space-sm);
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: var(--space-xs);
+    font-weight: 700;
+}
+
+.popup-role-mobile {
+    display: none;
+    /* Hidden on desktop as role is visible in label */
+}
+
+.popup-details {
+    list-style-position: inside;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+/* Responsive Timeline (Mobile) */
+@media (max-width: 768px) {
+    .timeline-road {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: var(--space-lg);
+        gap: 60px;
+        /* Space between nodes */
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .timeline-line {
+        display: none;
+    }
+
+    .timeline-node-wrapper {
+        flex-direction: row;
+        align-items: flex-start;
+        width: 100%;
+        overflow: visible;
+        /* Allow popup to show */
+        transform: translateY(20px);
+        /* Slide up/down instead of left/right? Or keep left/right? Let's do fade in + slight slide up */
+        /* Reset desktop transform */
+        transform: translateX(0) translateY(20px);
+        position: relative;
+        /* For pseudo-element positioning */
+    }
+
+    /* Per-item line connecting to the next dot */
+    .timeline-node-wrapper::after {
+        content: '';
+        position: absolute;
+        left: 10px;
+        /* Center of 24px dot (12px) - half line width (2px) */
+        top: 24px;
+        /* Start from bottom of circle */
+        bottom: -60px;
+        /* Extend to next item (gap is 60px) */
+        width: 4px;
+        background: var(--border-color);
+        z-index: 0;
+    }
+
+    /* Hide line for the last item */
+    .timeline-node-wrapper:last-child::after {
+        display: none;
+    }
+
+    .timeline-road.in-view .timeline-node-wrapper {
+        transform: translateX(0) translateY(0);
+    }
+
+    /* Flattened structure adjustments */
+    .node-circle {
+        margin-bottom: 0;
+        margin-right: var(--space-md);
+        flex-shrink: 0;
+    }
+
+    .timeline-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .node-label {
+        position: static;
+        transform: none;
+        align-items: flex-start;
+        text-align: left;
+        margin-top: 0;
+        pointer-events: auto;
+        /* Re-enable pointer events for mobile if needed, though click is on wrapper */
+    }
+
+    .node-date {
+        margin-bottom: 0;
+        font-size: 0.75rem;
+    }
+
+    .node-role {
+        font-size: 1rem;
+        margin-bottom: 0;
+    }
+
+    /* Popup to the right for mobile */
+    .timeline-popup {
+        position: relative;
+        /* Flow naturally */
+        top: auto;
+        left: auto;
+        transform: none;
+        width: 100%;
+        max-width: none;
+        opacity: 0;
+        visibility: hidden;
+        max-height: 0;
+        /* Collapse height when hidden */
+        overflow: hidden;
+        padding: 0 var(--space-md);
+        /* Remove vertical padding when hidden */
+        border: none;
+        /* Remove border when hidden */
+        transition: all 0.3s ease;
+        margin-top: 0;
+    }
+
+    /* Show popup on active state for mobile */
+    .timeline-node-wrapper.active .timeline-popup {
+        opacity: 1;
+        visibility: visible;
+        max-height: 500px;
+        /* Expand height - large enough to fit content */
+        padding: var(--space-md);
+        /* Restore padding */
+        border: 1px solid var(--border-color);
+        /* Restore border */
+        margin-top: var(--space-sm);
+        transform: none;
+        pointer-events: auto;
+    }
+
+    /* Disable hover effect on mobile to prevent sticky hover states */
+    .timeline-node-wrapper:hover .timeline-popup {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .timeline-node-wrapper.active:hover .timeline-popup {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Disable hover effect on mobile to prevent sticky hover states */
+    .node-circle:hover~.timeline-popup {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    /* Re-apply visibility for active state */
+    .timeline-node-wrapper.active .timeline-popup {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .popup-company {
+        display: block;
+        /* Show company in popup on mobile too? Or is it in label? User said "Do not mention company name in default visibility". So yes, show in popup. */
+    }
+}
+
+/* Projects */
+.projects-section {
+    padding: var(--space-lg) 0;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-md);
+}
+
+.project-card {
+    background: var(--bg-card);
+    padding: var(--space-md);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    transition: transform var(--transition-fast);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-sm);
+}
+
+.badge {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.5rem;
+    background: var(--bg-body);
+    border-radius: 4px;
+}
+
+/* Blogs */
+.blogs-section {
+    padding: var(--space-lg) 0;
+}
+
+.blogs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-md);
+}
+
+.blog-card {
+    background: var(--bg-card);
+    padding: var(--space-md);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition-fast);
+}
+
+.blog-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-color);
+}
+
+.blog-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xs);
+}
+
+.blog-card h3 {
+    margin-bottom: var(--space-sm);
+    font-size: 1.25rem;
+}
+
+.blog-card p {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-md);
+    flex-grow: 1;
+}
+
+.read-more {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+.site-footer {
+    padding: var(--space-lg) 0 var(--space-md);
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-content {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+}
+
+.email-link {
+    display: inline-block;
+    font-size: 1rem;
+    margin: var(--space-md) 0;
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-md);
+}
+
+.social-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--text-secondary);
+    transition: color var(--transition-fast), transform var(--transition-fast);
+}
+
+.social-links a:hover .social-icon {
+    color: var(--text-primary);
+    transform: translateY(-3px);
+}
+
+.footer-bottom {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-section {
+        text-align: center;
+        padding-top: var(--space-xl);
+    }
+
+    .tagline {
+        margin-inline: auto;
+    }
+
+    .hero-actions {
+        justify-content: center;
+    }
+
+    .profile-card {
+        margin: 0 auto;
+    }
+
+    /* Force hover state for profile image on mobile */
+    .profile-image {
+        filter: grayscale(0%);
+        transform: scale(1.05);
+    }
+
+    .profile-image-wrapper {
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .glow-overlay {
+        opacity: 1;
+    }
+
+    .bento-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-card,
+    .skills-card,
+    .tools-card,
+    .education-card {
+        grid-column: span 1;
+    }
+
+    .timeline-item {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1002;
+    }
+
+    .hamburger-icon {
+        width: 24px;
+        height: 18px;
+        position: relative;
+        transform: rotate(0deg);
+        transition: .5s ease-in-out;
+        cursor: pointer;
+    }
+
+    .hamburger-icon span {
+        display: block;
+        position: absolute;
+        height: 2px;
+        width: 100%;
+        background: var(--text-primary);
+        border-radius: 9px;
+        opacity: 1;
+        left: 0;
+        transform: rotate(0deg);
+        transition: .25s ease-in-out;
+    }
+
+    .hamburger-icon span:nth-child(1) {
+        top: 0px;
+    }
+
+    .hamburger-icon span:nth-child(2) {
+        top: 8px;
+    }
+
+    .hamburger-icon span:nth-child(3) {
+        top: 16px;
+    }
+
+    .hamburger-icon.open span:nth-child(1) {
+        top: 8px;
+        transform: rotate(135deg);
+    }
+
+    .hamburger-icon.open span:nth-child(2) {
+        opacity: 0;
+        left: -60px;
+    }
+
+    .hamburger-icon.open span:nth-child(3) {
+        top: 8px;
+        transform: rotate(-135deg);
+    }
+
+    .mobile-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: var(--bg-body);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out, visibility 0s linear 0.3s;
+        z-index: 1001;
+        visibility: hidden;
+    }
+
+    .mobile-menu.open {
+        transform: translateX(0);
+        visibility: visible;
+        transition: transform 0.3s ease-in-out, visibility 0s linear 0s;
+    }
+
+    .mobile-nav-links {
+        list-style: none;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-lg);
+    }
+
+    .mobile-nav-links a {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        text-decoration: none;
+    }
+}
+
+/* Desktop Styles for new elements */
+.mobile-menu-btn,
+.mobile-menu {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .mobile-menu {
+        display: flex;
+    }
+}
+
+/* Loading Blur */
+.loading-blur {
+    filter: blur(10px);
+    transition: filter 0.5s ease;
+    pointer-events: none;
+}
+
+/* Content Wrapper for Blur Transition */
+.content-wrapper {
+    transition: filter 1.5s ease-out;
+    filter: blur(0);
+}
+
+.content-wrapper.loading-blur {
+    filter: blur(10px);
+}

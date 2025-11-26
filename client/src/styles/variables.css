@@ -1,0 +1,37 @@
+:root {
+    /* Colors - Minimalist Palette */
+    --bg-body: #F9FAFB;
+    /* Very light gray for softness */
+    --bg-card: #FFFFFF;
+    --text-primary: #111827;
+    --text-secondary: #6B7280;
+    --accent-color: #2563EB;
+    /* Professional Blue */
+    --border-color: #E5E7EB;
+
+    /* Spacing */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 2rem;
+    --space-lg: 4rem;
+    --space-xl: 8rem;
+
+    /* Grid */
+    --container-width: 1200px;
+    --border-radius: 12px;
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+}
+
+[data-theme="dark"] {
+    --bg-body: #000000;
+    /* True Black */
+    --bg-card: #121212;
+    /* Dark Gray for cards */
+    --text-primary: #FFFFFF;
+    --text-secondary: #A1A1AA;
+    --accent-color: #FFFFFF;
+    /* White accent for monochrome look */
+    --border-color: #27272A;
+}
