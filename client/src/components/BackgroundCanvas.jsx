@@ -37,8 +37,8 @@ const BackgroundCanvas = ({ onLoaded, className }) => {
             for (let x = 0; x < width; x += spacing) {
                 for (let y = 0; y < height; y += spacing) {
                     dots.push({
-                        x: centerX, // Start at center for explosion effect
-                        y: centerY,
+                        x: phase === 'grid' ? x : centerX, // Start at center for explosion effect, or at grid pos if already in grid phase
+                        y: phase === 'grid' ? y : centerY,
                         originX: x,
                         originY: y,
                         vx: 0,
@@ -86,9 +86,12 @@ const BackgroundCanvas = ({ onLoaded, className }) => {
                     // Assign angle for loading circle (0 to 2PI)
                     closestDot.angle = (index / targets.length) * Math.PI * 2;
                     closestDot.orbitRadius = loadingRadius;
-                    // Set initial position to circle for loader dots
-                    closestDot.x = centerX + Math.cos(closestDot.angle) * loadingRadius;
-                    closestDot.y = centerY + Math.sin(closestDot.angle) * loadingRadius;
+
+                    // Set initial position to circle for loader dots ONLY if not in grid phase
+                    if (phase !== 'grid') {
+                        closestDot.x = centerX + Math.cos(closestDot.angle) * loadingRadius;
+                        closestDot.y = centerY + Math.sin(closestDot.angle) * loadingRadius;
+                    }
                 }
             });
         };

@@ -7,7 +7,6 @@
 
 html {
     scroll-behavior: smooth;
-    overflow-x: hidden;
 }
 
 section,
@@ -29,7 +28,6 @@ footer {
 body {
     background-color: var(--bg-body);
     transition: background-color var(--transition-fast), color var(--transition-fast);
-    overflow-x: hidden;
 }
 
 #background-canvas {
@@ -1049,10 +1047,51 @@ body {
 
 /* Content Wrapper for Blur Transition */
 .content-wrapper {
-    transition: filter 1.5s ease-out;
+    transition: filter 0.5s ease-out;
     filter: blur(0);
 }
 
 .content-wrapper.loading-blur {
     filter: blur(10px);
+}
+
+/* Scroll to Top Button */
+.scroll-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: var(--text-primary);
+    color: var(--bg-body);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-to-top:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 768px) {
+    .scroll-to-top {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 40px;
+        height: 40px;
+    }
 }

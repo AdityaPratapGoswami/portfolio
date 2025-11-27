@@ -8,7 +8,7 @@ const About = () => {
                     {/* About Card */}
                     <div className="bento-card about-card">
                         <h2>About Me</h2>
-                        <p>I’m someone who loves solving real user needs by understanding the psychology behind their choices. I started my journey through internships in web development and data analysis, where I learned how technology works from the inside and how data reveals user behaviour. That foundation naturally led me to product management, where after an internship and discovered how much I enjoy shaping products end-to-end. I’m thoughtful, collaborative, and motivated by building things that genuinely help people.</p>
+                        <p>I’m someone who loves solving real user needs by understanding the psychology behind their choices. I started my journey through internships in web development and data analysis, where I learned how technology works from the inside and how data reveals user behaviour. That foundation naturally led me to product management, where after an internship I discovered how much I enjoy shaping products end-to-end. I’m thoughtful, collaborative, and motivated by building things that genuinely help people.</p>
                     </div>
 
                     {/* Skills Card */}
