@@ -293,6 +293,98 @@ body {
     color: var(--text-secondary);
 }
 
+.skill-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-sm);
+}
+
+.skill-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    min-width: 180px;
+    /* Ensure consistent alignment for names */
+}
+
+.skill-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    flex-grow: 1;
+}
+
+.skill-bars {
+    display: flex;
+    gap: 6px;
+    flex-grow: 1;
+}
+
+.skill-level-name {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    width: 100px;
+    /* Fixed width to prevent layout shift during animation */
+    flex-shrink: 0;
+    /* Prevent shrinking */
+    text-align: right;
+}
+
+.bar {
+    flex-grow: 1;
+    height: 10px;
+    background-color: var(--bg-body);
+    /* Empty state color */
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    transition: background-color 3.5s cubic-bezier(0.22, 1, 0.36, 1), border-color 3.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 3.5s cubic-bezier(0.22, 1, 0.36, 1);
+    /* Smooth easing */
+}
+
+/* Initial state for filled bars when not yet animated: look empty */
+.skills-card:not(.animate) .bar.filled {
+    background-color: var(--bg-body);
+    border-color: var(--border-color);
+    box-shadow: none;
+}
+
+.skills-card.animate .bar.filled {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 5px rgba(var(--accent-color-rgb), 0.5);
+}
+
+@media (max-width: 768px) {
+
+    /* Revert: Show all 8 bars */
+    .skill-bars .bar:nth-child(even) {
+        display: block;
+    }
+
+    /* Stack layout: Name on top, Bars+Label below */
+    .skill-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+    }
+
+    .skill-name {
+        width: 100%;
+        margin-bottom: 4px;
+    }
+
+    .skill-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .skill-bars {
+        flex-grow: 1;
+        /* Ensure bars take available space */
+    }
+}
+
 /* Bento Grid */
 .bento-section {
     padding: var(--space-lg) 0;
@@ -300,7 +392,7 @@ body {
 
 .bento-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-template-rows: auto auto;
     gap: var(--space-sm);
 }
@@ -321,11 +413,23 @@ body {
 }
 
 .tools-card {
-    grid-column: span 1;
+    grid-column: span 2;
 }
 
 .education-card {
-    grid-column: span 2;
+    grid-column: span 1;
+}
+
+.edu-item {
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.edu-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
 .tags {
@@ -1033,9 +1137,26 @@ body {
         display: block;
     }
 
-    .mobile-menu {
-        display: flex;
-    }
+}
+
+.skill-bars {
+    display: flex;
+    gap: 4px;
+}
+
+.bar {
+    width: 8px;
+    height: 16px;
+    background-color: var(--bg-body);
+    /* Empty state color */
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+}
+
+.bar.filled {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 5px rgba(var(--accent-color-rgb), 0.5);
 }
 
 /* Loading Blur */
