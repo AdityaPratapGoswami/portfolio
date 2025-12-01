@@ -7,6 +7,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 section,
@@ -28,6 +29,8 @@ footer {
 body {
     background-color: var(--bg-body);
     transition: background-color var(--transition-fast), color var(--transition-fast);
+    overflow-x: hidden;
+    width: 100%;
 }
 
 #background-canvas {
@@ -1127,16 +1130,12 @@ body {
 }
 
 /* Desktop Styles for new elements */
-.mobile-menu-btn,
-.mobile-menu {
-    display: none;
-}
+@media (min-width: 769px) {
 
-@media (max-width: 768px) {
-    .mobile-menu-btn {
-        display: block;
+    .mobile-menu-btn,
+    .mobile-menu {
+        display: none;
     }
-
 }
 
 .skill-bars {
