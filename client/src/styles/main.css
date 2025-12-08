@@ -7,7 +7,7 @@
 
 html {
     scroll-behavior: smooth;
-    overflow-x: hidden;
+    /* overflow-x removed to fix sticky positioning */
 }
 
 section,
@@ -29,7 +29,7 @@ footer {
 body {
     background-color: var(--bg-body);
     transition: background-color var(--transition-fast), color var(--transition-fast);
-    overflow-x: hidden;
+    /* overflow-x removed */
     width: 100%;
 }
 
@@ -1214,4 +1214,17 @@ body {
         width: 40px;
         height: 40px;
     }
+}
+
+/* Project Card Link Override */
+.project-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    /* Ensure it behaves like a block for the card */
+}
+
+.project-card-link:hover {
+    color: inherit;
+    /* Prevent hover color change if needed, or let card hover effects take over */
 }

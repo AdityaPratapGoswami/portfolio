@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Projects = () => {
     return (
@@ -6,6 +6,15 @@ const Projects = () => {
             <div className="container">
                 <h2 className="section-title">Selected Projects</h2>
                 <div className="projects-grid">
+                    <Link to="/project/okr-task-tracker" target="_blank" className="project-card-link">
+                        <article className="project-card">
+                            <div className="card-header">
+                                <h3>OKR based Task Tracker</h3>
+                                <span className="badge">Personal</span>
+                            </div>
+                            <p>A smart, analytics-driven daily tracker that turns your tasks, habits, and goals into actionable insights and practical OKRs.</p>
+                        </article>
+                    </Link>
                     <article className="project-card">
                         <div className="card-header">
                             <h3>Google Search Case</h3>
