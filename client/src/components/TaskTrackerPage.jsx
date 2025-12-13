@@ -76,10 +76,10 @@ const TaskTrackerPage = () => {
                         <div className="toc-widget desktop-only">
                             <h3>Table of Contents</h3>
                             <ul>
-                                <li><a href="#core-problem">The Core Problem</a></li>
-                                <li><a href="#designed-for-real-life">Designed for Real Life</a></li>
-                                <li><a href="#bringing-okrs">OKRs into Everyday Life</a></li>
-                                <li><a href="#why-i-built-it">Why I Built It</a></li>
+                                <li><a href="#cracks-in-system">Cracks in the System</a></li>
+                                <li><a href="#real-problem">The Real Problem</a></li>
+                                <li><a href="#missing-analytics">Missing Analytics</a></li>
+                                <li><a href="#introducing-balance">Introducing Balance</a></li>
                             </ul>
                         </div>
                         <div className="author-widget desktop-only">
@@ -100,63 +100,35 @@ const TaskTrackerPage = () => {
                     </header>
 
                     <div className="article-content">
-                        <p className="lead-paragraph">For the longest time, I believed something simple: when you write your tasks down, you’re far more likely to get them done. And the research agrees.</p>
-                        <p>So naturally, I used to track every day on Notion — three categories, four to five tasks under each. It kept me organized, but honestly… it was also a slog. Too manual, too repetitive, too boring. And the biggest problem? I couldn’t analyze anything.</p>
-                        <p>There were questions I wanted answers to —</p>
+                        <p className="lead-paragraph">I was using Notion to manage my everyday tasks. Every Sunday, I’d sit down, plan out my next week, list my goals, break them into tasks—and honestly, it worked. Once things were written down, I felt locked in. Each day, I’d open Notion and just execute.</p>
+
+                        <h2 id="cracks-in-system">But over time, cracks started showing.</h2>
+                        <p>First, everything was way too manual. Life doesn’t run on a fixed schedule. Some tasks are spontaneous, some ideas come mid-day, some priorities change on the fly. I had to constantly update, rearrange, and rethink my structure. After a while, that started feeling like work in itself.</p>
+                        <p>At the same time, I wanted more than just a to-do list. I wanted to build my life around Objectives and Key Results—something that gives direction and purpose. So I created an OKR page in Notion. On paper, it sounded perfect.</p>
+                        <p>In reality? It was a mess.</p>
+                        <p>The OKR page lived separately from my weekly tasks. Managing both at the same time was hard. I’d start strong, check OKRs for a few days… and then slowly drift back to just ticking off weekly tasks. Eventually, the OKR page just sat there untouched.</p>
+
+                        <h2 id="real-problem">And that’s when I hit the real problem.</h2>
+                        <p>I was completing tasks every day—but I had no idea where I was actually headed.</p>
+                        <p>What’s the point of being productive if your actions aren’t connected to a larger direction?</p>
+                        <p>Humans need to write their goals down. More importantly, they need to see progress toward those goals. I couldn’t see that. All I saw was a growing list of completed checkboxes.</p>
+
+                        <h2 id="missing-analytics">Another big gap was behavior analysis.</h2>
+                        <p>I wanted answers to questions like:</p>
                         <ul>
-                            <li>Which tasks am I repeatedly ignoring?</li>
-                            <li>Which category deserves more focus this week?</li>
-                            <li>Where am I slipping, and where am I improving?</li>
+                            <li>Which tasks do I keep postponing?</li>
+                            <li>Which categories do I consistently ignore?</li>
+                            <li>When am I most productive?</li>
+                            <li>What patterns repeat every week?</li>
                         </ul>
-                        <p>Notion wasn’t built for that level of insight. And implementing OKRs on top of this system? Nearly impossible. It added so much overhead that I eventually abandoned the whole idea of integrating OKRs into my everyday workflow.</p>
-                        <p>That frustration is what sparked this project: a personal task-tracking web app that actually learns from your behaviour instead of just recording it.</p>
+                        <p>Notion wasn’t built for that depth of personal analytics. I couldn’t store or analyze enough meaningful data to understand my own behavior. Everything stayed static—no insights, no patterns, no feedback loop.</p>
 
-                        <h2 id="core-problem">The Core Problem I Wanted to Solve</h2>
-                        <p>My original workflow looked organized on the surface, but it had three core issues:</p>
-                        <h3>1. Too much manual effort</h3>
-                        <p>Creating daily pages, typing tasks, assigning points — it all took more time than the tasks themselves.</p>
-                        <h3>2. Zero analytics</h3>
-                        <p>I couldn't see patterns. There was no way to understand my habits beyond intuition.</p>
-                        <h3>3. OKRs felt impossible to implement</h3>
-                        <p>OKRs are great in theory but hard to bring into day-to-day life without automation or structure.</p>
-                        <p>I wanted a system that would handle the boring parts for me and give me meaningful insights so I could actually improve.</p>
+                        <h2 id="introducing-balance">So I decided to build Balance.</h2>
+                        <p>A task tracker that connects everyday tasks with long-term objectives. Something that handles spontaneous tasks naturally, keeps goals and execution in the same place, and actually tells you how you’re behaving over time—not just what you’ve checked off.</p>
+                        <p>Balance wasn’t about doing more tasks.</p>
+                        <p>It was about knowing why I’m doing them—and whether they’re actually taking me somewhere.</p>
 
-                        <h2 id="designed-for-real-life">The Task Tracker: Designed for Real Life, Not Just Recording</h2>
-                        <p>This web app is my attempt at turning that messy daily routine into something structured, intelligent, and genuinely useful.</p>
-                        <p>Here’s what it does:</p>
-                        <p>The app mirrors the natural rhythm of life. Everything is nested, easy to navigate, and automatically generated — no more manually creating pages.</p>
-
-                        <h3>✔️ Daily Tasks with Points</h3>
-                        <p>Each day comes with task sections. Complete a task → earn points.</p>
-                        <p>Your daily total feeds into your weekly average, giving instant visibility into consistency.</p>
-
-                        <h3>Behavior-Driven Analytics</h3>
-                        <p>This is the real magic. The system can highlight:</p>
-                        <ul>
-                            <li>Tasks you keep ignoring</li>
-                            <li>Categories where you’re slipping</li>
-                            <li>Weeks where productivity dipped</li>
-                            <li>Patterns in focus areas</li>
-                            <li>Trends across months and quarters</li>
-                        </ul>
-                        <p>It’s like turning your routine into a dashboard.</p>
-
-                        <h2 id="bringing-okrs">OKRs into Everyday Life</h2>
-                        <p>The biggest win for me.</p>
-                        <p>By connecting tasks to categories and categories to higher-level goals, OKRs become naturally integrated into the flow instead of being a complicated separate system.</p>
-                        <ul>
-                            <li>Objectives guide the bigger picture</li>
-                            <li>Key Results map to categories</li>
-                            <li>Daily tasks push those results forward</li>
-                        </ul>
-                        <p>It’s OKR, but lightweight and human.</p>
-
-                        <h2 id="why-i-built-it">Why I Built It</h2>
-                        <p>Because I didn’t want another to-do list.</p>
-                        <p>I wanted a tool that reflects how I think, how I work, and how I improve.</p>
-                        <p>This project helped me turn an unscalable workflow into something automated, measurable, and motivating. And it showed me how personal productivity systems can evolve when combined with thoughtful product design and engineering.</p>
-
-                        <p>Here’s the <a href="https://github.com/AdityaPratapGoswami/task-tracker" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-color)' }}>GitHub link</a> to the project. Once development is complete, I’ll be bringing this tool live on the web as well.</p>
+                        <p>Check out the <a href="https://task-tracker-v6xe.vercel.app/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-color)' }}>Live Site</a> or explore the code on <a href="https://github.com/AdityaPratapGoswami/task-tracker" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-color)' }}>GitHub</a>.</p>
 
                         <div className="author-widget mobile-only">
                             <h3>About the Author</h3>
