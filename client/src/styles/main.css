@@ -828,6 +828,134 @@ body {
     }
 }
 
+/* Curved Road Timeline - Desktop */
+@media (min-width: 769px) {
+    .timeline-road.curved-road {
+        display: block;
+        position: relative;
+        height: 250px;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-bottom: 0;
+        transition: margin-bottom 0.3s ease;
+    }
+
+    /* Slide down content when popup is visible */
+    .timeline-road.curved-road:has(.node-circle:hover),
+    .timeline-road.curved-road:has(.timeline-popup:hover) {
+        margin-bottom: 280px;
+    }
+
+    .road-svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 250px;
+        z-index: 0;
+        overflow: visible;
+    }
+
+    .road-path-bg {
+        stroke: var(--border-color);
+        stroke-dasharray: 2000;
+        stroke-dashoffset: 2000;
+        transition: stroke-dashoffset 2s ease-out;
+    }
+
+    .road-path-center {
+        stroke: var(--text-secondary);
+        opacity: 0.5;
+        stroke-dasharray: 2000;
+        stroke-dashoffset: 2000;
+        transition: stroke-dashoffset 2s ease-out 0.3s;
+    }
+
+    .timeline-road.curved-road.in-view .road-path-bg,
+    .timeline-road.curved-road.in-view .road-path-center {
+        stroke-dashoffset: 0;
+    }
+
+    .timeline-road.curved-road .timeline-node-wrapper.curved-node {
+        position: absolute;
+        left: var(--node-x);
+        top: var(--node-y);
+        transform: translate(-50%, -50%);
+        flex: none;
+        width: auto;
+        opacity: 0;
+    }
+
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+
+    /* Staggered animation for curved nodes */
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(2) {
+        transition-delay: 0.4s;
+    }
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(3) {
+        transition-delay: 0.8s;
+    }
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(4) {
+        transition-delay: 1.2s;
+    }
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(5) {
+        transition-delay: 1.6s;
+    }
+
+    /* Top position nodes - label goes above, popup goes below */
+    .timeline-node-wrapper.curved-node.top .node-label {
+        top: auto;
+        bottom: 35px;
+    }
+
+    .timeline-node-wrapper.curved-node.top .timeline-popup {
+        top: 35px;
+        bottom: auto;
+        transform: translateX(-50%) scale(0.8);
+    }
+
+    .timeline-node-wrapper.curved-node.top .node-circle:hover ~ .timeline-content .timeline-popup,
+    .timeline-node-wrapper.curved-node.top .timeline-popup:hover {
+        transform: translateX(-50%) scale(1);
+    }
+
+    /* Bottom position nodes - label goes below, popup goes below label */
+    .timeline-node-wrapper.curved-node.bottom .node-label {
+        top: 35px;
+        bottom: auto;
+    }
+
+    .timeline-node-wrapper.curved-node.bottom .timeline-popup {
+        top: 100px;
+        bottom: auto;
+    }
+}
+
+/* Curved Road - Mobile: Hide SVG, use vertical layout */
+@media (max-width: 768px) {
+    .road-svg {
+        display: none;
+    }
+
+    .timeline-road.curved-road {
+        height: auto;
+    }
+
+    .timeline-road.curved-road .timeline-node-wrapper.curved-node {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+    }
+
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node {
+        transform: translateX(0) translateY(0);
+    }
+}
+
 /* Projects */
 .projects-section {
     padding: var(--space-lg) 0;
