@@ -1,9 +1,73 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 const Experience = () => {
     const [activeId, setActiveId] = useState(null);
+    const [isInView, setIsInView] = useState(false);
+    const [animationProgress, setAnimationProgress] = useState([0, 0, 0, 0]);
+    const [labelsVisible, setLabelsVisible] = useState([false, false, false, false]);
     const timelineRef = useRef(null);
     const pathRef = useRef(null);
+    const animationRef = useRef(null);
+    const hasAnimated = useRef(false);
+
+    // Animation configuration
+    const ANIMATION_DURATION = 1000; // ms per dot
+    const STAGGER_DELAY = 300; // ms between each dot starting
+    const LABEL_DELAY = 200; // ms after dot arrives to show label
+
+    // Target positions along the path (0 to 1)
+    const targetPositions = [0, 0.333, 0.666, 1];
+
+    const animateDots = useCallback(() => {
+        if (!pathRef.current || hasAnimated.current) return;
+        hasAnimated.current = true;
+
+        const path = pathRef.current;
+        const pathLength = path.getTotalLength();
+        const startTime = performance.now();
+
+        const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const newProgress = [...animationProgress];
+            let allComplete = true;
+
+            targetPositions.forEach((target, index) => {
+                const dotStartTime = index * STAGGER_DELAY;
+                const dotElapsed = elapsed - dotStartTime;
+
+                if (dotElapsed < 0) {
+                    allComplete = false;
+                    return;
+                }
+
+                const progress = Math.min(dotElapsed / ANIMATION_DURATION, 1);
+                // Easing function (ease-out cubic)
+                const eased = 1 - Math.pow(1 - progress, 3);
+                newProgress[index] = eased * target;
+
+                if (progress < 1) {
+                    allComplete = false;
+                } else if (progress >= 1 && !labelsVisible[index]) {
+                    // Show label after dot arrives
+                    setTimeout(() => {
+                        setLabelsVisible(prev => {
+                            const updated = [...prev];
+                            updated[index] = true;
+                            return updated;
+                        });
+                    }, LABEL_DELAY);
+                }
+            });
+
+            setAnimationProgress(newProgress);
+
+            if (!allComplete) {
+                animationRef.current = requestAnimationFrame(animate);
+            }
+        };
+
+        animationRef.current = requestAnimationFrame(animate);
+    }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -11,6 +75,7 @@ const Experience = () => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('in-view');
+                        setIsInView(true);
                     }
                 });
             },
@@ -25,8 +90,31 @@ const Experience = () => {
             if (timelineRef.current) {
                 observer.unobserve(timelineRef.current);
             }
+            if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current);
+            }
         };
     }, []);
+
+    // Start animation when in view
+    useEffect(() => {
+        if (isInView && pathRef.current) {
+            animateDots();
+        }
+    }, [isInView, animateDots]);
+
+    // Get position on path
+    const getPositionOnPath = (progress) => {
+        if (!pathRef.current) return { x: 0, y: 0 };
+        const path = pathRef.current;
+        const pathLength = path.getTotalLength();
+        const point = path.getPointAtLength(progress * pathLength);
+        // Convert SVG coordinates to percentage
+        return {
+            x: (point.x / 1000) * 100,
+            y: point.y
+        };
+    };
 
     const experiences = [
         {
@@ -132,34 +220,44 @@ const Experience = () => {
                     </svg>
 
                     {/* Experience Nodes */}
-                    {experiences.map((exp, index) => (
-                        <div
-                            key={exp.id}
-                            className={`timeline-node-wrapper curved-node ${exp.position} ${activeId === exp.id ? 'active' : ''}`}
-                            style={{
-                                '--node-x': `${nodePositions[index].x}%`,
-                                '--node-y': `${nodePositions[index].y}px`
-                            }}
-                            onClick={() => handleNodeClick(exp.id)}
-                        >
-                            <div className="node-circle"></div>
-                            <div className="timeline-content">
-                                <div className="node-label">
-                                    <span className="node-date">{exp.date}</span>
-                                    <span className="node-role">{exp.role}</span>
-                                </div>
-                                <div className="timeline-popup">
-                                    <h3 className="popup-company">{exp.company}</h3>
-                                    <div className="popup-role-mobile">{exp.role}</div>
-                                    <ul className="popup-details">
-                                        {exp.details.map((detail, idx) => (
-                                            <li key={idx}>{detail}</li>
-                                        ))}
-                                    </ul>
+                    {experiences.map((exp, index) => {
+                        const pos = getPositionOnPath(animationProgress[index]);
+                        const finalPos = nodePositions[index];
+                        // Use animated position if animating, otherwise use final position
+                        const currentX = isInView ? pos.x : 0;
+                        const currentY = isInView ? pos.y : finalPos.y;
+
+                        return (
+                            <div
+                                key={exp.id}
+                                className={`timeline-node-wrapper curved-node ${exp.position} ${activeId === exp.id ? 'active' : ''} ${labelsVisible[index] ? 'label-visible' : ''}`}
+                                style={{
+                                    '--node-x': `${currentX}%`,
+                                    '--node-y': `${currentY}px`,
+                                    '--final-x': `${finalPos.x}%`,
+                                    '--final-y': `${finalPos.y}px`
+                                }}
+                                onClick={() => handleNodeClick(exp.id)}
+                            >
+                                <div className="node-circle"></div>
+                                <div className="timeline-content">
+                                    <div className={`node-label ${labelsVisible[index] ? 'visible' : ''}`}>
+                                        <span className="node-date">{exp.date}</span>
+                                        <span className="node-role">{exp.role}</span>
+                                    </div>
+                                    <div className="timeline-popup">
+                                        <h3 className="popup-company">{exp.company}</h3>
+                                        <div className="popup-role-mobile">{exp.role}</div>
+                                        <ul className="popup-details">
+                                            {exp.details.map((detail, idx) => (
+                                                <li key={idx}>{detail}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </section>
