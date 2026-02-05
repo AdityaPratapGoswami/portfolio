@@ -190,7 +190,7 @@ body {
 
 .btn {
     padding: 0.75rem 1.5rem;
-    border-radius: 6px;
+    border-radius: var(--border-radius-sm);
     transition: all var(--transition-fast);
 }
 
@@ -445,7 +445,7 @@ body {
 .tags span {
     background: var(--bg-body);
     padding: 0.25rem 0.75rem;
-    border-radius: 100px;
+    border-radius: var(--border-radius-pill);
     font-size: 0.875rem;
     border: 1px solid var(--border-color);
 }
@@ -876,39 +876,100 @@ body {
         stroke-dashoffset: 0;
     }
 
+    /* Keyframe animation for dot moving from left to position */
+    @keyframes dotSlideIn {
+        from {
+            left: 0%;
+        }
+        to {
+            left: var(--node-x);
+        }
+    }
+
+    /* Keyframe animation for label fade in */
+    @keyframes labelFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes labelFadeInTop {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     .timeline-road.curved-road .timeline-node-wrapper.curved-node {
         position: absolute;
-        left: var(--node-x);
+        left: 0%;
         top: var(--node-y);
         transform: translate(-50%, -50%);
         flex: none;
         width: auto;
+        opacity: 1;
+    }
+
+    /* Animate dots when in view */
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node {
+        animation: dotSlideIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* Staggered animation delays for dots */
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(2) {
+        animation-delay: 0.3s;
+    }
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(3) {
+        animation-delay: 0.7s;
+    }
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(4) {
+        animation-delay: 1.1s;
+    }
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(5) {
+        animation-delay: 1.5s;
+    }
+
+    /* Hide labels initially */
+    .timeline-road.curved-road .timeline-node-wrapper.curved-node .node-label {
         opacity: 0;
     }
 
-    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node {
-        opacity: 1;
-        transform: translate(-50%, -50%);
+    /* Animate labels when in view */
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node .node-label {
+        animation: labelFadeIn 0.4s ease forwards;
     }
 
-    /* Staggered animation for curved nodes */
-    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(2) {
-        transition-delay: 0.4s;
+    /* Staggered label reveal (after dot animation: delay + 0.8s) */
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(2) .node-label {
+        animation-delay: 1.1s;
     }
-    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(3) {
-        transition-delay: 0.8s;
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(3) .node-label {
+        animation-delay: 1.5s;
     }
-    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(4) {
-        transition-delay: 1.2s;
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(4) .node-label {
+        animation-delay: 1.9s;
     }
-    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(5) {
-        transition-delay: 1.6s;
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(5) .node-label {
+        animation-delay: 2.3s;
     }
 
-    /* Top position nodes - label goes above, popup goes below */
+    /* Top position nodes - label goes above, uses different animation */
     .timeline-node-wrapper.curved-node.top .node-label {
         top: auto;
         bottom: 35px;
+    }
+
+    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node.top .node-label {
+        animation-name: labelFadeInTop;
     }
 
     .timeline-node-wrapper.curved-node.top .timeline-popup {
@@ -1269,21 +1330,6 @@ body {
 .skill-bars {
     display: flex;
     gap: 4px;
-}
-
-.bar {
-    width: 8px;
-    height: 16px;
-    background-color: var(--bg-body);
-    /* Empty state color */
-    border: 1px solid var(--border-color);
-    border-radius: 2px;
-}
-
-.bar.filled {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
-    box-shadow: 0 0 5px rgba(var(--accent-color-rgb), 0.5);
 }
 
 /* Loading Blur */
