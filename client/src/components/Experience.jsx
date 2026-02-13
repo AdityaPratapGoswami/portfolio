@@ -1,32 +1,133 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { animate, stagger, createTimeline, svg } from 'animejs';
+import { useScrollTrigger } from '../hooks/useScrollAnimation';
 
 const Experience = () => {
     const [activeId, setActiveId] = useState(null);
     const timelineRef = useRef(null);
-    const pathRef = useRef(null);
+    const roadPathBgRef = useRef(null);
+    const roadPathCenterRef = useRef(null);
 
+    // Scroll trigger (animates once)
+    const { containerRef: sectionRef, isVisible } = useScrollTrigger({
+        threshold: 0.3
+    });
+
+    // Handle timeline animations when section comes into view
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('in-view');
-                    }
-                });
-            },
-            { threshold: 0.2 }
-        );
+        if (!sectionRef.current || !isVisible) return;
 
-        if (timelineRef.current) {
-            observer.observe(timelineRef.current);
+        const timeline = sectionRef.current.querySelector('.timeline-road');
+        if (!timeline) return;
+
+        timeline.classList.add('in-view');
+
+        // Create main animation timeline
+        const tl = createTimeline({
+            defaults: {
+                ease: 'outExpo'
+            }
+        });
+
+        // 1. Animate section title
+        const title = sectionRef.current.querySelector('.section-title');
+        if (title) {
+            tl.add(title, {
+                opacity: [0, 1],
+                translateY: [30, 0],
+                duration: 700,
+                ease: 'outQuad'
+            }, 0);
         }
 
-        return () => {
-            if (timelineRef.current) {
-                observer.unobserve(timelineRef.current);
+        // 2. Animate SVG road path drawing with anime.js
+        const roadBg = roadPathBgRef.current;
+        const roadCenter = roadPathCenterRef.current;
+
+        if (roadBg && roadCenter) {
+            // Get path length for stroke animation
+            const pathLength = roadBg.getTotalLength();
+
+            // Set initial state
+            roadBg.style.strokeDasharray = pathLength;
+            roadBg.style.strokeDashoffset = pathLength;
+            roadCenter.style.strokeDasharray = pathLength;
+            roadCenter.style.strokeDashoffset = pathLength;
+
+            // Animate road background path
+            tl.add(roadBg, {
+                strokeDashoffset: [pathLength, 0],
+                duration: 1800,
+                ease: 'inOutQuad'
+            }, 200);
+
+            // Animate road center line (slightly delayed)
+            tl.add(roadCenter, {
+                strokeDashoffset: [pathLength, 0],
+                duration: 1600,
+                ease: 'inOutQuad'
+            }, 400);
+        }
+
+        // 3. Animate nodes along the path timing
+        const nodes = timeline.querySelectorAll('.timeline-node-wrapper');
+        nodes.forEach((node, index) => {
+            const circle = node.querySelector('.node-circle');
+            const label = node.querySelector('.node-label');
+            const dateEl = label?.querySelector('.node-date');
+            const roleEl = label?.querySelector('.node-role');
+
+            // Calculate delay based on path progress
+            // Nodes appear as the road "reaches" them
+            const nodeDelay = 400 + (index * 400);
+
+            // Node wrapper fade in
+            tl.add(node, {
+                opacity: [0, 1],
+                duration: 400,
+                ease: 'outQuad'
+            }, nodeDelay);
+
+            // Circle pops in with elastic effect
+            if (circle) {
+                tl.add(circle, {
+                    scale: [0, 1.3, 1],
+                    duration: 600,
+                    ease: 'outElastic(1, 0.5)'
+                }, nodeDelay + 100);
+
+                // Add a subtle pulse after appearing
+                tl.add(circle, {
+                    boxShadow: [
+                        '0 0 0 0 rgba(var(--accent-color-rgb), 0.4)',
+                        '0 0 0 10px rgba(var(--accent-color-rgb), 0)',
+                    ],
+                    duration: 600,
+                    ease: 'outQuad'
+                }, nodeDelay + 500);
             }
-        };
-    }, []);
+
+            // Label elements animate separately for a staggered text reveal
+            if (dateEl) {
+                tl.add(dateEl, {
+                    opacity: [0, 1],
+                    translateY: [15, 0],
+                    duration: 400,
+                    ease: 'outQuad'
+                }, nodeDelay + 200);
+            }
+
+            if (roleEl) {
+                tl.add(roleEl, {
+                    opacity: [0, 1],
+                    translateY: [15, 0],
+                    duration: 400,
+                    ease: 'outQuad'
+                }, nodeDelay + 300);
+            }
+        });
+
+    }, [isVisible]);
 
     const experiences = [
         {
@@ -78,21 +179,17 @@ const Experience = () => {
         }
     ];
 
-    // Node positions along the S-curve (percentage of viewBox width, y position)
-    // S-curve: starts top-left, curves down, back up, then down again
-    // Shifted down to leave room for labels above top nodes
     const nodePositions = [
-        { x: 5, y: 80 },    // Node 1: top-left
-        { x: 35, y: 220 },  // Node 2: bottom
-        { x: 65, y: 80 },   // Node 3: top
-        { x: 95, y: 220 }   // Node 4: bottom-right
+        { x: 5, y: 80 },
+        { x: 35, y: 220 },
+        { x: 65, y: 80 },
+        { x: 95, y: 220 }
     ];
 
     const handleNodeClick = (id) => {
         setActiveId(activeId === id ? null : id);
     };
 
-    // S-curve path that connects all 4 points (shifted down by 50px)
     const curvePath = `
         M 50 80
         C 120 80, 180 220, 350 220
@@ -101,7 +198,7 @@ const Experience = () => {
     `;
 
     return (
-        <section id="experience" className="experience-section">
+        <section id="experience" className="experience-section" ref={sectionRef}>
             <div className="container">
                 <h2 className="section-title">Experience</h2>
                 <div className="timeline-road curved-road" ref={timelineRef}>
@@ -113,6 +210,7 @@ const Experience = () => {
                     >
                         {/* Road background (wider stroke) */}
                         <path
+                            ref={roadPathBgRef}
                             d={curvePath}
                             className="road-path-bg"
                             fill="none"
@@ -121,7 +219,7 @@ const Experience = () => {
                         />
                         {/* Road center line (dashed) */}
                         <path
-                            ref={pathRef}
+                            ref={roadPathCenterRef}
                             d={curvePath}
                             className="road-path-center"
                             fill="none"
@@ -138,15 +236,16 @@ const Experience = () => {
                             className={`timeline-node-wrapper curved-node ${exp.position} ${activeId === exp.id ? 'active' : ''}`}
                             style={{
                                 '--node-x': `${nodePositions[index].x}%`,
-                                '--node-y': `${nodePositions[index].y}px`
+                                '--node-y': `${nodePositions[index].y}px`,
+                                opacity: 0
                             }}
                             onClick={() => handleNodeClick(exp.id)}
                         >
-                            <div className="node-circle"></div>
+                            <div className="node-circle" style={{ transform: 'scale(0)' }}></div>
                             <div className="timeline-content">
                                 <div className="node-label">
-                                    <span className="node-date">{exp.date}</span>
-                                    <span className="node-role">{exp.role}</span>
+                                    <span className="node-date" style={{ opacity: 0 }}>{exp.date}</span>
+                                    <span className="node-role" style={{ opacity: 0 }}>{exp.role}</span>
                                 </div>
                                 <div className="timeline-popup">
                                     <h3 className="popup-company">{exp.company}</h3>

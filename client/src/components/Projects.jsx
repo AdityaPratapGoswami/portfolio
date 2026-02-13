@@ -1,8 +1,68 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { animate, stagger } from 'animejs';
+import { useScrollTrigger } from '../hooks/useScrollAnimation';
 
 const Projects = () => {
+    // Scroll trigger (animates once)
+    const { containerRef: sectionRef, isVisible } = useScrollTrigger({
+        threshold: 0.3
+    });
+
+    // Animate projects when section comes into view
+    useEffect(() => {
+        if (!sectionRef.current) return;
+
+        const title = sectionRef.current.querySelector('.section-title');
+        const cards = sectionRef.current.querySelectorAll('.project-card');
+
+        if (isVisible) {
+            // Animate section title
+            if (title) {
+                title.style.opacity = '0';
+                title.style.transform = 'translateY(20px)';
+                animate(title, {
+                    opacity: [0, 1],
+                    translateY: [20, 0],
+                    duration: 600,
+                    ease: 'outQuad'
+                });
+            }
+
+            // Reset and animate cards
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(40px)';
+            });
+
+            animate(cards, {
+                opacity: [0, 1],
+                translateY: [40, 0],
+                duration: 700,
+                delay: stagger(100, { start: 200 }),
+                ease: 'outExpo'
+            });
+
+            // Animate badges with a pop effect
+            const badges = sectionRef.current.querySelectorAll('.badge');
+            badges.forEach(badge => {
+                badge.style.opacity = '0';
+                badge.style.transform = 'scale(0.5)';
+            });
+
+            animate(badges, {
+                opacity: [0, 1],
+                scale: [0.5, 1],
+                duration: 400,
+                delay: stagger(100, { start: 500 }),
+                ease: 'outBack'
+            });
+
+        }
+    }, [isVisible]);
+
     return (
-        <section id="projects" className="projects-section">
+        <section id="projects" className="projects-section" ref={sectionRef}>
             <div className="container">
                 <h2 className="section-title">Selected Projects</h2>
                 <div className="projects-grid">

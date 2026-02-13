@@ -1,21 +1,54 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { animate, stagger, createTimeline } from 'animejs';
+import { useScrollTrigger } from '../hooks/useScrollAnimation';
 
-const DecodeText = ({ text, trigger, delay = 0, duration = 2000 }) => {
-    const [display, setDisplay] = useState('');
+// Animation timing constants
+const BAR_ANIM_DURATION = 400;
+const WAVE_DELAY = 60;
+const TOTAL_BARS = 8;
+
+// Skills data with pre-calculated timing
+const skills = [
+    { name: 'Product Strategy', level: 8, levelName: 'Strong' },
+    { name: 'User Research', level: 8, levelName: 'Strong' },
+    { name: 'Data Analysis', level: 6, levelName: 'Confident' },
+    { name: 'Frontend', level: 6, levelName: 'Confident' },
+    { name: 'Consumer Psychology', level: 4, levelName: 'Intermediate' },
+    { name: 'Backend', level: 4, levelName: 'Intermediate' },
+    { name: 'Wireframing', level: 2, levelName: 'Beginner' },
+].map((skill, rowIndex) => {
+    // Calculate when this skill's last filled bar finishes
+    const lastFilledBarIndex = skill.level - 1;
+    const wavePosition = rowIndex * TOTAL_BARS + lastFilledBarIndex;
+    const barStartDelay = 200 + wavePosition * WAVE_DELAY;
+    const barFinishTime = barStartDelay + BAR_ANIM_DURATION;
+
+    return {
+        ...skill,
+        // Text decode starts when first bar of this row starts, ends when last filled bar finishes
+        textDelay: 200 + (rowIndex * TOTAL_BARS * WAVE_DELAY),
+        textDuration: barFinishTime - (200 + rowIndex * TOTAL_BARS * WAVE_DELAY)
+    };
+});
+
+const DecodeText = ({ text, trigger, delay = 0, duration = 1000 }) => {
+    const [display, setDisplay] = useState(text);
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
+    const hasStarted = useRef(false);
 
     useEffect(() => {
-        if (!trigger) return;
+        if (!trigger || hasStarted.current) return;
+        hasStarted.current = true;
+
+        // Start with scrambled text immediately
+        setDisplay(text.split('').map(() => chars[Math.floor(Math.random() * chars.length)]).join(''));
 
         let timeout;
         let interval;
 
         timeout = setTimeout(() => {
             let iteration = 0;
-            // Calculate step size to fit duration
-            // Total ticks = duration / interval_time (20ms)
-            // Step = text.length / Total ticks
-            const intervalTime = 20;
+            const intervalTime = 30;
             const totalTicks = duration / intervalTime;
             const step = text.length / totalTicks;
 
@@ -34,6 +67,7 @@ const DecodeText = ({ text, trigger, delay = 0, duration = 2000 }) => {
 
                 if (iteration >= text.length) {
                     clearInterval(interval);
+                    setDisplay(text);
                 }
 
                 iteration += step;
@@ -42,43 +76,123 @@ const DecodeText = ({ text, trigger, delay = 0, duration = 2000 }) => {
 
         return () => {
             clearTimeout(timeout);
-            clearInterval(interval);
+            if (interval) clearInterval(interval);
         };
-    }, [text, trigger, delay, duration]);
+    }, [trigger, text, delay, duration, chars]);
 
-    return <span>{display || text}</span>;
+    return <span>{display}</span>;
 };
 
 const About = () => {
-    const [isVisible, setIsVisible] = useState(false);
-    const skillsRef = useRef(null);
+    // Scroll trigger for the entire section (animates once)
+    const { containerRef: aboutRef, isVisible: sectionVisible } = useScrollTrigger({
+        threshold: 0.3
+    });
 
+    // Separate trigger for skills card animation
+    const { containerRef: skillsContainerRef, isVisible: skillsVisible } = useScrollTrigger({
+        threshold: 0.2
+    });
+
+    // Animate bento cards when section comes into view
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                    observer.disconnect(); // Trigger once
-                }
-            },
-            { threshold: 0.1 } // Trigger when 10% of the card is visible
-        );
+        if (!aboutRef.current || !sectionVisible) return;
 
-        if (skillsRef.current) {
-            observer.observe(skillsRef.current);
-        }
+        const cards = aboutRef.current.querySelectorAll('.bento-card');
 
-        return () => observer.disconnect();
-    }, []);
+        // Staggered entrance animation
+        animate(cards, {
+            opacity: [0, 1],
+            translateY: [30, 0],
+            duration: 700,
+            delay: stagger(150, { start: 100 }),
+            ease: 'outExpo'
+        });
+
+    }, [sectionVisible]);
+
+    // Animate tools tags separately
+    useEffect(() => {
+        if (!aboutRef.current || !sectionVisible) return;
+
+        const tags = aboutRef.current.querySelectorAll('.tools-card .tags span');
+        if (tags.length === 0) return;
+
+        // Delayed cascade animation for tags
+        animate(tags, {
+            opacity: [0, 1],
+            scale: [0.8, 1],
+            duration: 400,
+            delay: stagger(50, { start: 600 }),
+            ease: 'outBack'
+        });
+
+    }, [sectionVisible]);
+
+    // Expertise section animation with synchronized bars and text
+    useEffect(() => {
+        if (!skillsContainerRef.current || !skillsVisible) return;
+
+        const card = skillsContainerRef.current;
+        const allBars = card.querySelectorAll('.bar');
+        const filledBars = card.querySelectorAll('.bar.filled');
+        const skillItems = card.querySelectorAll('.skill-item');
+
+        // Animate skill items (name + bars container)
+        animate(skillItems, {
+            opacity: [0, 1],
+            translateX: [-20, 0],
+            duration: 500,
+            delay: stagger(80),
+            ease: 'outQuad'
+        });
+
+        // Animate all bars with wave effect (diagonal pattern)
+        allBars.forEach((bar, index) => {
+            const rowIndex = Math.floor(index / TOTAL_BARS);
+            const colIndex = index % TOTAL_BARS;
+            const wavePosition = rowIndex * TOTAL_BARS + colIndex;
+
+            // Set initial state
+            bar.style.opacity = '0';
+            bar.style.transform = 'scaleY(0)';
+
+            animate(bar, {
+                opacity: [0, 1],
+                scaleY: [0, 1],
+                duration: 300,
+                delay: 200 + wavePosition * WAVE_DELAY,
+                ease: 'outQuad'
+            });
+        });
+
+        // Animate filled bars to their colored state
+        filledBars.forEach((bar) => {
+            const allBarsArray = Array.from(allBars);
+            const globalIndex = allBarsArray.indexOf(bar);
+            const rowIndex = Math.floor(globalIndex / TOTAL_BARS);
+            const colIndex = globalIndex % TOTAL_BARS;
+            const wavePosition = rowIndex * TOTAL_BARS + colIndex;
+
+            animate(bar, {
+                backgroundColor: ['var(--bg-body)', 'var(--accent-color)'],
+                borderColor: ['var(--border-color)', 'var(--accent-color)'],
+                duration: BAR_ANIM_DURATION,
+                delay: 200 + wavePosition * WAVE_DELAY,
+                ease: 'outQuad'
+            });
+        });
+
+    }, [skillsVisible]);
 
     return (
-        <section id="about" className="bento-section">
+        <section id="about" className="bento-section" ref={aboutRef}>
             <div className="container">
                 <div className="bento-grid">
                     {/* About Card */}
                     <div className="bento-card about-card">
                         <h2>About Me</h2>
-                        <p>I’m someone who loves solving real user needs by understanding the psychology behind their choices. I started my journey through internships in web development and data analysis, where I learned how technology works from the inside and how data reveals user behaviour. That foundation naturally led me to product management, where after an internship I discovered how much I enjoy shaping products end-to-end. I’m thoughtful, collaborative, and motivated by building things that genuinely help people.</p>
+                        <p>I'm someone who loves solving real user needs by understanding the psychology behind their choices. I started my journey through internships in web development and data analysis, where I learned how technology works from the inside and how data reveals user behaviour. That foundation naturally led me to product management, where after an internship I discovered how much I enjoy shaping products end-to-end. I'm thoughtful, collaborative, and motivated by building things that genuinely help people.</p>
                     </div>
 
                     {/* Education Card */}
@@ -102,19 +216,14 @@ const About = () => {
                     </div>
 
                     {/* Skills Card */}
-                    <div className={`bento-card skills-card ${isVisible ? 'animate' : ''}`} ref={skillsRef}>
+                    <div
+                        className="bento-card skills-card"
+                        ref={skillsContainerRef}
+                    >
                         <h3>Expertise</h3>
                         <div className="skills-list">
-                            {[
-                                { name: 'Product Strategy', level: 8, levelName: 'Strong' },
-                                { name: 'User Research', level: 8, levelName: 'Strong' },
-                                { name: 'Data Analysis', level: 6, levelName: 'Confident' },
-                                { name: 'Frontend', level: 6, levelName: 'Confident' },
-                                { name: 'Consumer Psychology', level: 4, levelName: 'Intermediate' },
-                                { name: 'Backend', level: 4, levelName: 'Intermediate' },
-                                { name: 'Wireframing', level: 2, levelName: 'Beginner' },
-                            ].map((skill, index) => (
-                                <div key={index} className="skill-item">
+                            {skills.map((skill, index) => (
+                                <div key={index} className="skill-item" style={{ opacity: 0 }}>
                                     <span className="skill-name">{skill.name}</span>
                                     <div className="skill-right">
                                         <div className="skill-bars">
@@ -122,19 +231,15 @@ const About = () => {
                                                 <div
                                                     key={i}
                                                     className={`bar ${i < skill.level ? 'filled' : ''}`}
-                                                    style={{
-                                                        // Stagger delay based on column index (i) and row index (index)
-                                                        transitionDelay: `${index * 100 + i * 50}ms`
-                                                    }}
                                                 ></div>
                                             ))}
                                         </div>
                                         <span className="skill-level-name">
                                             <DecodeText
                                                 text={skill.levelName}
-                                                trigger={isVisible}
-                                                delay={index * 100}
-                                                duration={2850} // 350ms (last bar stagger) + 2500ms (fill duration)
+                                                trigger={skillsVisible}
+                                                delay={skill.textDelay}
+                                                duration={skill.textDuration}
                                             />
                                         </span>
                                     </div>

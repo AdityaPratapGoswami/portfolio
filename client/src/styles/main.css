@@ -213,6 +213,19 @@ body {
     background-color: var(--border-color);
 }
 
+/* Typewriter cursor animation */
+.cycling-typewriter .cursor {
+    display: inline-block;
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+    font-weight: 400;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
 /* Profile Image */
 .profile-card {
     position: relative;
@@ -338,24 +351,9 @@ body {
     flex-grow: 1;
     height: 10px;
     background-color: var(--bg-body);
-    /* Empty state color */
     border: 1px solid var(--border-color);
     border-radius: 2px;
-    transition: background-color 3.5s cubic-bezier(0.22, 1, 0.36, 1), border-color 3.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 3.5s cubic-bezier(0.22, 1, 0.36, 1);
-    /* Smooth easing */
-}
-
-/* Initial state for filled bars when not yet animated: look empty */
-.skills-card:not(.animate) .bar.filled {
-    background-color: var(--bg-body);
-    border-color: var(--border-color);
-    box-shadow: none;
-}
-
-.skills-card.animate .bar.filled {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
-    box-shadow: 0 0 5px rgba(var(--accent-color-rgb), 0.5);
+    transform-origin: bottom;
 }
 
 @media (max-width: 768px) {
@@ -858,22 +856,11 @@ body {
 
     .road-path-bg {
         stroke: var(--border-color);
-        stroke-dasharray: 2000;
-        stroke-dashoffset: 2000;
-        transition: stroke-dashoffset 2s ease-out;
     }
 
     .road-path-center {
         stroke: var(--text-secondary);
         opacity: 0.5;
-        stroke-dasharray: 2000;
-        stroke-dashoffset: 2000;
-        transition: stroke-dashoffset 2s ease-out 0.3s;
-    }
-
-    .timeline-road.curved-road.in-view .road-path-bg,
-    .timeline-road.curved-road.in-view .road-path-center {
-        stroke-dashoffset: 0;
     }
 
     .timeline-road.curved-road .timeline-node-wrapper.curved-node {

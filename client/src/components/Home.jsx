@@ -8,9 +8,10 @@ import Blogs from './Blogs';
 import Footer from './Footer';
 import BackgroundCanvas from './BackgroundCanvas';
 import ScrollToTop from './ScrollToTop';
+import { LoadingProvider, useLoading } from '../context/LoadingContext';
 
-const Home = () => {
-    const [isLoading, setIsLoading] = React.useState(true);
+const HomeContent = () => {
+    const { isLoading, setLoadingComplete } = useLoading();
 
     React.useEffect(() => {
         document.title = "Aditya";
@@ -19,7 +20,7 @@ const Home = () => {
     return (
         <>
             <ScrollToTop />
-            <BackgroundCanvas onLoaded={() => setIsLoading(false)} className={isLoading ? 'canvas-loader' : ''} />
+            <BackgroundCanvas onLoaded={setLoadingComplete} className={isLoading ? 'canvas-loader' : ''} />
             <a href="#main-content" className="skip-link">Skip to main content</a>
 
             <div className={`content-wrapper ${isLoading ? 'loading-blur' : ''}`}>
@@ -35,6 +36,14 @@ const Home = () => {
                 </main>
             </div>
         </>
+    );
+};
+
+const Home = () => {
+    return (
+        <LoadingProvider>
+            <HomeContent />
+        </LoadingProvider>
     );
 };
 
