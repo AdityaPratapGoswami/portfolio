@@ -108,8 +108,10 @@ const Experience = () => {
             }
 
             // Label elements animate separately for a staggered text reveal
-            if (dateEl) {
-                tl.add(dateEl, {
+            const companyEl = label?.querySelector('.node-company');
+
+            if (companyEl) {
+                tl.add(companyEl, {
                     opacity: [0, 1],
                     translateY: [15, 0],
                     duration: 400,
@@ -124,6 +126,15 @@ const Experience = () => {
                     duration: 400,
                     ease: 'outQuad'
                 }, nodeDelay + 300);
+            }
+
+            if (dateEl) {
+                tl.add(dateEl, {
+                    opacity: [0, 1],
+                    translateY: [15, 0],
+                    duration: 400,
+                    ease: 'outQuad'
+                }, nodeDelay + 400);
             }
         });
 
@@ -244,8 +255,9 @@ const Experience = () => {
                             <div className="node-circle" style={{ transform: 'scale(0)' }}></div>
                             <div className="timeline-content">
                                 <div className="node-label">
-                                    <span className="node-date" style={{ opacity: 0 }}>{exp.date}</span>
+                                    <span className="node-company" style={{ opacity: 0 }}>{exp.company}</span>
                                     <span className="node-role" style={{ opacity: 0 }}>{exp.role}</span>
+                                    <span className="node-date" style={{ opacity: 0 }}>{exp.date}</span>
                                 </div>
                                 <div className="timeline-popup">
                                     <h3 className="popup-company">{exp.company}</h3>
