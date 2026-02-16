@@ -190,7 +190,7 @@ body {
 
 .btn {
     padding: 0.75rem 1.5rem;
-    border-radius: 6px;
+    border-radius: var(--border-radius-sm);
     transition: all var(--transition-fast);
 }
 
@@ -443,7 +443,7 @@ body {
 .tags span {
     background: var(--bg-body);
     padding: 0.25rem 0.75rem;
-    border-radius: 100px;
+    border-radius: var(--border-radius-pill);
     font-size: 0.875rem;
     border: 1px solid var(--border-color);
 }
@@ -863,6 +863,7 @@ body {
         opacity: 0.5;
     }
 
+    /* Dots are positioned by JavaScript along the curve path */
     .timeline-road.curved-road .timeline-node-wrapper.curved-node {
         position: absolute;
         left: var(--node-x);
@@ -870,32 +871,30 @@ body {
         transform: translate(-50%, -50%);
         flex: none;
         width: auto;
-        opacity: 0;
-    }
-
-    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node {
         opacity: 1;
-        transform: translate(-50%, -50%);
     }
 
-    /* Staggered animation for curved nodes */
-    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(2) {
-        transition-delay: 0.4s;
-    }
-    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(3) {
-        transition-delay: 0.8s;
-    }
-    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(4) {
-        transition-delay: 1.2s;
-    }
-    .timeline-road.curved-road.in-view .timeline-node-wrapper.curved-node:nth-child(5) {
-        transition-delay: 1.6s;
+    /* Hide labels initially, show when JS adds .visible class */
+    .timeline-road.curved-road .timeline-node-wrapper.curved-node .node-label {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
     }
 
-    /* Top position nodes - label goes above, popup goes below */
+    .timeline-road.curved-road .timeline-node-wrapper.curved-node .node-label.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Top position nodes - label goes above */
     .timeline-node-wrapper.curved-node.top .node-label {
         top: auto;
         bottom: 35px;
+        transform: translateY(-10px);
+    }
+
+    .timeline-node-wrapper.curved-node.top .node-label.visible {
+        transform: translateY(0);
     }
 
     .timeline-node-wrapper.curved-node.top .timeline-popup {
@@ -1256,21 +1255,6 @@ body {
 .skill-bars {
     display: flex;
     gap: 4px;
-}
-
-.bar {
-    width: 8px;
-    height: 16px;
-    background-color: var(--bg-body);
-    /* Empty state color */
-    border: 1px solid var(--border-color);
-    border-radius: 2px;
-}
-
-.bar.filled {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
-    box-shadow: 0 0 5px rgba(var(--accent-color-rgb), 0.5);
 }
 
 /* Loading Blur */

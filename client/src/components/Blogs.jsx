@@ -13,8 +13,6 @@ const Blogs = () => {
                         <p>In an AI-driven world, emotional intelligence is becoming the human edge at work. A conversational look at why EQ matters more than ever.</p>
                         <Link to="/article/emotional-intelligence" target="_blank" rel="noopener noreferrer" className="read-more">Read Article &rarr;</Link>
                     </article>
-
-
                 </div>
             </div>
         </section>

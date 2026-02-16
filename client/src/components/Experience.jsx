@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { animate, stagger, createTimeline, svg } from 'animejs';
+import { animate, stagger, createTimeline } from 'animejs';
 import { useScrollTrigger } from '../hooks/useScrollAnimation';
 
 const Experience = () => {

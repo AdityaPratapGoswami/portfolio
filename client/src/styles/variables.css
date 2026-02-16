@@ -18,10 +18,16 @@
 
     /* Grid */
     --container-width: 1200px;
+
+    /* Border Radius Scale */
+    --border-radius-sm: 6px;
     --border-radius: 12px;
+    --border-radius-pill: 100px;
 
     /* Transitions */
     --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+    --transition-slow: 0.6s ease-out;
 }
 
 [data-theme="dark"] {
