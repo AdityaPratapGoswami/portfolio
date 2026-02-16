@@ -254,7 +254,7 @@ const Experience = () => {
                         >
                             <div className="node-circle" style={{ transform: 'scale(0)' }}></div>
                             <div className="timeline-content">
-                                <div className="node-label">
+                                <div className="node-label" style={{ opacity: 1, transform: 'none' }}>
                                     <span className="node-company" style={{ opacity: 0 }}>{exp.company}</span>
                                     <span className="node-role" style={{ opacity: 0 }}>{exp.role}</span>
                                     <span className="node-date" style={{ opacity: 0 }}>{exp.date}</span>
