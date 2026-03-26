@@ -179,7 +179,12 @@ const About = () => {
                 borderColor: ['var(--border-color)', 'var(--accent-color)'],
                 duration: BAR_ANIM_DURATION,
                 delay: 200 + wavePosition * WAVE_DELAY,
-                ease: 'outQuad'
+                ease: 'outQuad',
+                onComplete: () => {
+                    // Remove inline styles so CSS variables take over on theme switch
+                    bar.style.removeProperty('background-color');
+                    bar.style.removeProperty('border-color');
+                }
             });
         });
 

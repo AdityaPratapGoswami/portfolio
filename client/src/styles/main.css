@@ -356,6 +356,11 @@ body {
     transform-origin: bottom;
 }
 
+.bar.filled {
+    background-color: var(--text-primary);
+    border-color: var(--text-primary);
+}
+
 @media (max-width: 768px) {
 
     /* Revert: Show all 8 bars */
@@ -890,11 +895,11 @@ body {
     .timeline-node-wrapper.curved-node.top .node-label {
         top: auto;
         bottom: 35px;
-        transform: translateY(-10px);
+        transform: translateX(-50%) translateY(-10px);
     }
 
     .timeline-node-wrapper.curved-node.top .node-label.visible {
-        transform: translateY(0);
+        transform: translateX(-50%) translateY(0);
     }
 
     .timeline-node-wrapper.curved-node.top .timeline-popup {

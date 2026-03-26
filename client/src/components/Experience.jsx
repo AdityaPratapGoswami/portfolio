@@ -191,22 +191,17 @@ const Experience = () => {
     ];
 
     const nodePositions = [
-        { x: 5, y: 80 },
-        { x: 35, y: 220 },
-        { x: 65, y: 80 },
-        { x: 95, y: 220 }
+        { x: 5, y: 125 },
+        { x: 35, y: 125 },
+        { x: 65, y: 125 },
+        { x: 95, y: 125 }
     ];
 
     const handleNodeClick = (id) => {
         setActiveId(activeId === id ? null : id);
     };
 
-    const curvePath = `
-        M 50 80
-        C 120 80, 180 220, 350 220
-        C 520 220, 580 80, 650 80
-        C 820 80, 880 220, 950 220
-    `;
+    const curvePath = `M 50 125 L 950 125`;
 
     return (
         <section id="experience" className="experience-section" ref={sectionRef}>

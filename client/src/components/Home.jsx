@@ -23,9 +23,9 @@ const HomeContent = () => {
             <BackgroundCanvas onLoaded={setLoadingComplete} className={isLoading ? 'canvas-loader' : ''} />
             <a href="#main-content" className="skip-link">Skip to main content</a>
 
-            <div className={`content-wrapper ${isLoading ? 'loading-blur' : ''}`}>
-                <Navbar />
+            <Navbar />
 
+            <div className={`content-wrapper ${isLoading ? 'loading-blur' : ''}`}>
                 <main id="main-content">
                     <Hero />
                     <About />
