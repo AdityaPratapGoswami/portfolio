@@ -147,10 +147,10 @@ const Experience = () => {
             company: "Cityflo",
             role: "Product Management Intern",
             details: [
-                "Launched Bridge Pack as an intermediate offering, lifting trial-to-ridepack conversion from 30% to 52% with a 15.6% RPU lift (₹13.4L/month).",
-                "Repackaged first-ride promo as wallet cash (Freecash) to improve perceived value, driving 3.5% RPU lift in new users & 2.1% lift in 10th-ride conversion (₹8.5L/month).",
-                "Reactivated churned users with a 10% lift in reactivation rate & 8% RPU lift via targeted campaigns to lapsed users.",
-                "Lifted Ride 2 conversion by 18% & RPU by 8.7% on price-sensitive routes by diagnosing the price jump as the key barrier."
+                "Launched Bridge Pack to bridge trial → full ridepack: 30%→52% conversion, +15.6% RPU (₹13.4L/mo).",
+                "Repackaged promo as Freecash wallet credit: +3.5% RPU (new users), +2.1% 10th-ride conversion (₹8.5L/mo).",
+                "Won back churned users with targeted lapsed-user campaigns: +10% reactivation, +8% RPU.",
+                "Cracked Ride 2 drop-off on price-sensitive routes: +18% conversion, +8.7% RPU."
             ],
             position: 'top'
         },
