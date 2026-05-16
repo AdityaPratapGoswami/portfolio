@@ -78,8 +78,8 @@ const Hero = () => {
             <div className="container grid-layout">
                 <div className="hero-text">
                     <p className="overline cycling-typewriter">{text}<span className="cursor">|</span></p>
-                    <h1>Aditya Pratap<br />Goswami</h1>
-                    <p className="tagline">Blending tech insight with user psychology in product.</p>
+                    <h1>Aditya <span className="wonk-italic">Pratap</span><br />Goswami</h1>
+                    <p className="tagline">I turn vision into execution.</p>
                     <div className="hero-actions">
                         <a href="#contact" className="btn btn-primary">Get in Touch</a>
                         <a href="#experience" className="btn btn-secondary">View Work</a>

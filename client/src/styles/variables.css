@@ -28,6 +28,31 @@
     --transition-fast: 0.2s ease;
     --transition-medium: 0.3s ease;
     --transition-slow: 0.6s ease-out;
+
+    /* Typography — Editorial Modernist */
+    --font-display: 'Fraunces', 'Times New Roman', serif;
+    --font-body: 'General Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+    --fs-9xl: clamp(3.25rem, 8vw, 7rem);
+    --fs-6xl: clamp(2.25rem, 5vw, 3.75rem);
+    --fs-4xl: 2rem;
+    --fs-3xl: 1.5rem;
+    --fs-2xl: 1.25rem;
+    --fs-xl: 1.125rem;
+    --fs-base: 1rem;
+    --fs-sm: 0.875rem;
+    --fs-xs: 0.75rem;
+
+    --lh-tight: 0.95;
+    --lh-snug: 1.1;
+    --lh-normal: 1.5;
+    --lh-relaxed: 1.65;
+
+    --tracking-display: -0.04em;
+    --tracking-title: -0.02em;
+    --tracking-body: -0.005em;
+    --tracking-mono: 0.14em;
 }
 
 [data-theme="dark"] {
