@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { animate, stagger, createTimeline } from 'animejs';
-import { useScrollTrigger } from '../hooks/useScrollAnimation';
+import { useState, useEffect, useRef } from 'react';
+import { createTimeline } from 'animejs';
+import { useScrollTrigger } from '../hooks/useScrollTrigger';
 
 const Experience = () => {
     const [activeId, setActiveId] = useState(null);
@@ -138,7 +138,7 @@ const Experience = () => {
             }
         });
 
-    }, [isVisible]);
+    }, [isVisible, sectionRef]);
 
     const experiences = [
         {

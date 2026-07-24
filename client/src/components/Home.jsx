@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import Navbar from './Navbar';
 import Hero from './Hero';
 import About from './About';
@@ -13,7 +13,7 @@ import { LoadingProvider, useLoading } from '../context/LoadingContext';
 const HomeContent = () => {
     const { isLoading, setLoadingComplete } = useLoading();
 
-    React.useEffect(() => {
+    useEffect(() => {
         document.title = "Aditya";
     }, []);
 

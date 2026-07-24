@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { animate, stagger } from 'animejs';
-import { useScrollTrigger } from '../hooks/useScrollAnimation';
+import { useScrollTrigger } from '../hooks/useScrollTrigger';
 
 const Projects = () => {
     // Scroll trigger (animates once)
@@ -30,7 +30,7 @@ const Projects = () => {
             }
 
             // Reset and animate cards
-            cards.forEach((card, index) => {
+            cards.forEach((card) => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(40px)';
             });
@@ -59,7 +59,7 @@ const Projects = () => {
             });
 
         }
-    }, [isVisible]);
+    }, [isVisible, sectionRef]);
 
     return (
         <section id="projects" className="projects-section" ref={sectionRef}>

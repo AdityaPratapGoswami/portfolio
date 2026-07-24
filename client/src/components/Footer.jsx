@@ -1,12 +1,10 @@
-import React from 'react';
-
 const Footer = () => {
     return (
         <footer id="contact" className="site-footer">
             <div className="container">
                 <div className="footer-content">
                     <h2>Let's Build Something Great.</h2>
-                    <p>Working as a Product Management Intern at Cityflo</p>
+                    <p>Open for Product Management roles</p>
                     <a href="mailto:adityapratapgoswami07@gmail.com"
                         className="email-link">adityapratapgoswami07@gmail.com</a>
                     <div className="social-links">

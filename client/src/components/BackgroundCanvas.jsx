@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 const BackgroundCanvas = ({ onLoaded, className }) => {
     const canvasRef = useRef(null);
@@ -14,7 +14,6 @@ const BackgroundCanvas = ({ onLoaded, className }) => {
 
         // Animation State
         let phase = 'loading'; // loading, exploding, grid
-        let globalRotation = 0;
         let explosionProgress = 0;
 
         // Configuration
@@ -26,7 +25,6 @@ const BackgroundCanvas = ({ onLoaded, className }) => {
         const returnSpeed = 0.05;
         const explosionSpeed = 0.02;
         const loadingRadius = 60; // Slightly larger radius for 12 dots
-        const rotationSpeed = 0.02;
 
         const createDots = () => {
             dots = [];
@@ -273,7 +271,7 @@ const BackgroundCanvas = ({ onLoaded, className }) => {
             window.removeEventListener('mousemove', handleMouseMove);
             cancelAnimationFrame(animationFrameId);
         };
-    }, []);
+    }, [onLoaded]);
 
     return <canvas id="background-canvas" ref={canvasRef} className={className}></canvas>;
 };

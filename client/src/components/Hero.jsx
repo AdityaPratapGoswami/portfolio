@@ -1,5 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLoading } from '../context/LoadingContext';
+
+const ROLES = ["Product Manager", "Full Stack Developer", "Data Analyst"];
 
 const Hero = () => {
     const [text, setText] = useState('');
@@ -10,7 +12,6 @@ const Hero = () => {
 
     const { isLoading } = useLoading();
 
-    const roles = ["Product Manager", "Full Stack Developer", "Data Analyst"];
     const typeSpeedRef = useRef(100);
     const profileCardRef = useRef(null);
 
@@ -26,7 +27,7 @@ const Hero = () => {
         if (!animationsComplete) return;
 
         const handleType = () => {
-            const currentRole = roles[roleIndex];
+            const currentRole = ROLES[roleIndex];
 
             if (isDeleting) {
                 setText(currentRole.substring(0, charIndex - 1));
@@ -43,14 +44,14 @@ const Hero = () => {
                 typeSpeedRef.current = 2000;
             } else if (isDeleting && charIndex === 0) {
                 setIsDeleting(false);
-                setRoleIndex((prev) => (prev + 1) % roles.length);
+                setRoleIndex((prev) => (prev + 1) % ROLES.length);
                 typeSpeedRef.current = 500;
             }
         };
 
         const timer = setTimeout(handleType, typeSpeedRef.current);
         return () => clearTimeout(timer);
-    }, [charIndex, isDeleting, roleIndex, roles, animationsComplete]);
+    }, [charIndex, isDeleting, roleIndex, animationsComplete]);
 
     // Profile card glow effect
     useEffect(() => {
