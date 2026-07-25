@@ -4,7 +4,6 @@ import { useScrollTrigger } from '../hooks/useScrollTrigger';
 
 const Experience = () => {
     const [activeId, setActiveId] = useState(null);
-    const timelineRef = useRef(null);
     const roadPathBgRef = useRef(null);
     const roadPathCenterRef = useRef(null);
 
@@ -209,7 +208,7 @@ const Experience = () => {
         <section id="experience" className="experience-section" ref={sectionRef}>
             <div className="container">
                 <h2 className="section-title">Experience</h2>
-                <div className="timeline-road curved-road" ref={timelineRef}>
+                <div className="timeline-road curved-road">
                     {/* SVG Curved Road - Desktop Only */}
                     <svg
                         className="road-svg"
